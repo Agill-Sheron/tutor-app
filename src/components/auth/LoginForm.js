@@ -68,14 +68,6 @@ const LoginForm = () => {
                 <Button onPress={handleLogin}>
                     <Text color={'white'}>Login</Text>
                 </Button>
-                <HStack justifyContent="center" space={4}>
-                    <Button onPress={handleGoogleSignIn} variant="outline">
-                        <Text>Sign in with Google</Text>
-                    </Button>
-                    <Button onPress={handleFacebookSignIn} variant="outline">
-                        <Text>Sign in with Facebook</Text>
-                    </Button>
-                </HStack>
                 <Pressable onPress={handleSignUp}>
                     <Text fontSize="md" color="blue.500">
                         Don't have an account? Sign Up
