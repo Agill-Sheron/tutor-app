@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Alert } from 'react-native';
 import firebase from '../../utils/firebase';
-import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
+import {getAuth, createUserWithEmailAndPassword, sendEmailVerification} from 'firebase/auth';
 import {
     Box,
     VStack,
@@ -11,8 +11,12 @@ import {
     Text,
     Select,
     CheckIcon,
-    TextArea,
+    HStack, IconButton, Icon,
 } from 'native-base';
+import {doc, getFirestore, setDoc} from "firebase/firestore";
+import {MaterialIcons} from "@expo/vector-icons";
+import { useNavigation } from '@react-navigation/native';
+
 
 const fieldsOfStudy = [
     'Computer Science',
@@ -39,27 +43,73 @@ const TutorSignupForm = () => {
     const [confirmPassword, setConfirmPassword] = useState('');
     const [fieldOfStudy, setFieldOfStudy] = useState('');
     const [yearsOfExperience, setYearsOfExperience] = useState('');
-    const [tutoredCourses, setTutoredCourses] = useState('');
+    const [tutoredCourses, setTutoredCourses] = useState([{ prefix: '', code: '' }]);
 
 
     const auth = getAuth(firebase);
-    const handleSignup = async () => {
-        if (password === confirmPassword) {
-            createUserWithEmailAndPassword(auth, email, password)
-                .then((userCredential) => {
-                    // Save additional fields to the database in the user's profile or a separate collection
-                    // ...
-                })
-                .catch((error) => {
-                    const errorCode = error.code;
-                    const errorMessage = error.message;
-                    // ..
-                });
-        } else {
-            Alert.alert('Error', 'Passwords do not match');
-        }
+    const db = getFirestore(firebase);
+    const navigation = useNavigation();
+
+
+    const addCourse = () => {
+        setTutoredCourses([...tutoredCourses, { prefix: '', code: '' }]);
     };
 
+    const removeCourse = (index) => {
+        setTutoredCourses(tutoredCourses.filter((_, i) => i !== index));
+    };
+
+    const updateCourse = (index, field, value) => {
+        const newCourses = [...tutoredCourses];
+        newCourses[index][field] = field === 'prefix' ? value.toUpperCase() : value;;
+        setTutoredCourses(newCourses);
+    };
+
+
+    const handleSignup = async () => {
+
+        if (password !== confirmPassword) {
+            Alert.alert('Error', 'Passwords do not match');
+            return;
+        }
+
+        try {
+            const userCredential = await createUserWithEmailAndPassword(
+                auth,
+                email,
+                password
+            );
+            const user = userCredential.user;
+
+            await setDoc(doc(db, "users", user.uid), {
+                userType: 'tutor',
+                fieldOfStudy: fieldOfStudy,
+                yearsOfExperience: yearsOfExperience,
+                tutoredCourses: tutoredCourses,
+            });
+
+            await sendEmailVerification(user);
+
+            // Display an alert requesting email confirmation
+            Alert.alert(
+                'Email Verification',
+                'A confirmation email has been sent to your email address. Please confirm your email before logging in.',
+                [
+                    {
+                        text: 'OK',
+                        onPress: () => {
+                            // Redirect the user to the Login component
+                            navigation.navigate('Login');
+                        },
+                    },
+                ]
+            );
+
+        } catch (error) {
+            console.log(error);
+            Alert.alert('Error', 'There was an error during the sign-up process. Please try again.');
+        }
+    };
 
     return (
         <Box flex={1} justifyContent="center" p={4} backgroundColor={'white'}>
@@ -119,12 +169,38 @@ const TutorSignupForm = () => {
                 </FormControl>
                 <FormControl>
                     <FormControl.Label>Tutored Courses</FormControl.Label>
-                    <TextArea
-                        h={20}
-                        placeholder="Enter courses (e.g., comp-353, soen-357)"
-                        value={tutoredCourses}
-                        onChangeText={setTutoredCourses}
-                    />
+                    {tutoredCourses.map((course, index) => (
+                        <HStack space={2} alignItems="center" key={index}>
+                            <Input
+                                value={course.prefix}
+                                onChangeText={(value) => updateCourse(index, 'prefix', value)}
+                                placeholder="Prefix (e.g., COMP)"
+                                maxLength={4}
+                                width={"50%"}
+                            />
+                            <Input
+                                value={course.code}
+                                onChangeText={(value) => updateCourse(index, 'code', value)}
+                                placeholder="Code (e.g., 357)"
+                                keyboardType="number-pad"
+                                maxLength={3}
+                                width={"30%"}
+                            />
+                            {index === tutoredCourses.length - 1 ? (
+                                <IconButton
+                                    icon={<Icon as={MaterialIcons} name="add" />}
+                                    onPress={addCourse}
+                                    width={"10%"}
+                                />
+                            ) : (
+                                <IconButton
+                                    icon={<Icon as={MaterialIcons} name="remove" />}
+                                    onPress={() => removeCourse(index)}
+                                    width={"10%"}
+                                />
+                            )}
+                        </HStack>
+                    ))}
                 </FormControl>
                 <Button onPress={handleSignup}>
                     <Text color={'white'}>Sign Up</Text>

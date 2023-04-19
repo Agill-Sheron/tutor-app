@@ -45,11 +45,6 @@ const LoginForm = () => {
             navigation.navigate('TutorSignUp');
         }
     };
-    const handleSignUp = () => {
-        // Navigate to the sign-up screen here
-        navigation.navigate('SignUp');
-
-    };
 
     return (
         <Box flex={1} justifyContent="center" p={4} backgroundColor={'white'}>

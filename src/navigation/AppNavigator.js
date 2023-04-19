@@ -1,7 +1,7 @@
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 
-import StudentSignupForm from '../components/auth/SignupForm';
+import StudentSignupForm from '../components/auth/StudentSignupForm';
 import TutorSignupForm from "../components/auth/TutorSignupForm";
 
 import LoginForm from '../components/auth/LoginForm';
