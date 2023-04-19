@@ -4,6 +4,8 @@ import { createStackNavigator } from '@react-navigation/stack';
 import StudentSignupForm from '../components/auth/StudentSignupForm';
 import TutorSignupForm from "../components/auth/TutorSignupForm";
 
+import TutorDashboard from "../components/main/TutorDashboard"
+
 import LoginForm from '../components/auth/LoginForm';
 const Stack = createStackNavigator();
 
@@ -17,6 +19,7 @@ const AppNavigator = () => {
             />
             <Stack.Screen name="StudentSignUp" component={StudentSignupForm} />
             <Stack.Screen name="TutorSignUp" component={TutorSignupForm} />
+            <Stack.Screen name="TutorDashboard" component={TutorDashboard} />
         </Stack.Navigator>
     );
 };
