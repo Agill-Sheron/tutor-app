@@ -1,27 +1,57 @@
 import React, { useState } from 'react';
 import { Alert } from 'react-native';
 import firebase from '../../utils/firebase';
-import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
+import { getAuth, createUserWithEmailAndPassword, sendEmailVerification } from 'firebase/auth';
+import { getFirestore, setDoc, doc } from 'firebase/firestore';
 import { Box, VStack, FormControl, Input, Button, Text } from 'native-base';
+import {useNavigation} from "@react-navigation/native";
 
-const SignupForm = () => {
+const StudentSignupForm = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
 
     const auth = getAuth(firebase);
+    const db = getFirestore(firebase);
+    const navigation = useNavigation();
+
     const handleSignup = async () => {
-        if (password === confirmPassword) {
-            createUserWithEmailAndPassword(auth, email, password)
-                .then((userCredential) => {
-                    const user = userCredential.user;
-                })
-                .catch((error) => {
-                    const errorCode = error.code;
-                    const errorMessage = error.message;
-                });
-        } else {
+        if (password !== confirmPassword) {
             Alert.alert('Error', 'Passwords do not match');
+            return;
+        }
+
+        try {
+            const userCredential = await createUserWithEmailAndPassword(
+                auth,
+                email,
+                password
+            );
+            const user = userCredential.user;
+
+            await setDoc(doc(db, "users", user.uid), {
+                userType: 'student',
+            });
+
+            await sendEmailVerification(user);
+
+            // Display an alert requesting email confirmation
+            Alert.alert(
+                'Email Verification',
+                'A confirmation email has been sent to your email address. Please confirm your email before logging in.',
+                [
+                    {
+                        text: 'OK',
+                        onPress: () => {
+                            // Redirect the user to the Login component
+                            navigation.navigate('Login');
+                        },
+                    },
+                ]
+            );
+        } catch (error) {
+            console.log(error);
+            Alert.alert('Error', 'There was an error during the sign-up process. Please try again.');
         }
     };
 
@@ -63,4 +93,4 @@ const SignupForm = () => {
     );
 };
 
-export default SignupForm;
+export default StudentSignupForm;

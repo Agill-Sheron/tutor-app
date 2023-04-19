@@ -1,9 +1,10 @@
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 
-import SignupForm from '../components/auth/SignupForm';
-import LoginForm from '../components/auth/LoginForm';
+import StudentSignupForm from '../components/auth/StudentSignupForm';
+import TutorSignupForm from "../components/auth/TutorSignupForm";
 
+import LoginForm from '../components/auth/LoginForm';
 const Stack = createStackNavigator();
 
 const AppNavigator = () => {
@@ -14,11 +15,8 @@ const AppNavigator = () => {
                 component={LoginForm}
                 options={{ headerShown: false }}
             />
-            <Stack.Screen
-                name="SignUp"
-                component={SignupForm}
-                options={{ headerShown: false }}
-            />
+            <Stack.Screen name="StudentSignUp" component={StudentSignupForm} />
+            <Stack.Screen name="TutorSignUp" component={TutorSignupForm} />
         </Stack.Navigator>
     );
 };

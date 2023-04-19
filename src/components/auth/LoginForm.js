@@ -1,6 +1,6 @@
 // src/components/Auth/LoginForm.js
 import React, { useState } from 'react';
-import { Image } from 'react-native';
+import {Alert, Image} from 'react-native';
 import {
     Box,
     VStack,
@@ -25,18 +25,25 @@ const LoginForm = () => {
         // Implement login functionality here
     };
 
-    const handleGoogleSignIn = () => {
-        // Implement Google sign-in functionality here
+    const showSignUpPrompt = () => {
+        Alert.alert(
+            'Sign Up',
+            'Choose your account type:',
+            [
+                { text: 'Student', onPress: () => handleSignUpChoice('student') },
+                { text: 'Tutor', onPress: () => handleSignUpChoice('tutor') },
+            ],
+            { cancelable: true },
+        );
     };
 
-    const handleFacebookSignIn = () => {
-        // Implement Facebook sign-in functionality here
-    };
 
-    const handleSignUp = () => {
-        // Navigate to the sign-up screen here
-        navigation.navigate('SignUp');
-
+    const handleSignUpChoice = (userType) => {
+        if (userType === 'student') {
+            navigation.navigate('StudentSignUp');
+        } else {
+            navigation.navigate('TutorSignUp');
+        }
     };
 
     return (
@@ -68,15 +75,7 @@ const LoginForm = () => {
                 <Button onPress={handleLogin}>
                     <Text color={'white'}>Login</Text>
                 </Button>
-                <HStack justifyContent="center" space={4}>
-                    <Button onPress={handleGoogleSignIn} variant="outline">
-                        <Text>Sign in with Google</Text>
-                    </Button>
-                    <Button onPress={handleFacebookSignIn} variant="outline">
-                        <Text>Sign in with Facebook</Text>
-                    </Button>
-                </HStack>
-                <Pressable onPress={handleSignUp}>
+                <Pressable onPress={showSignUpPrompt}>
                     <Text fontSize="md" color="blue.500">
                         Don't have an account? Sign Up
                     </Text>
