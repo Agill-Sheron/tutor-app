@@ -10,10 +10,18 @@ import {
     Avatar,
 } from 'native-base';
 
+import { useNavigation } from '@react-navigation/native';
+
 const TutorDashboard = () => {
     const [loading, setLoading] = useState(true);
     const [appointments, setAppointments] = useState([]);
     const [requests, setRequests] = useState([]);
+
+    const navigation = useNavigation();
+
+    const handleAppointmentPress = (appointment) => {
+        navigation.navigate('TutorAppointment', { appointment });
+    };
 
     useEffect(() => {
         setTimeout(() => {
@@ -80,7 +88,7 @@ const TutorDashboard = () => {
                             : appointments.map((appointment) => (
                                 <Pressable
                                     key={appointment.id}
-                                    onPress={() => console.log('Appointment Pressed')}
+                                    onPress={() => handleAppointmentPress(appointment)}
                                 >
                                     {({ isPressed }) => (
                                         <Box
