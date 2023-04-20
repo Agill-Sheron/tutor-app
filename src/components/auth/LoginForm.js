@@ -1,5 +1,5 @@
 // src/components/Auth/LoginForm.js
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import {Alert, Image} from 'react-native';
 import {
     Box,
@@ -12,7 +12,7 @@ import {
 } from 'native-base';
 
 import firebase from '../../utils/firebase';
-import { useNavigation } from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
 import {getAuth, sendEmailVerification, signInWithEmailAndPassword} from "firebase/auth";
 import {getFirestore, getDoc, doc} from "firebase/firestore";
 
@@ -35,6 +35,9 @@ const LoginForm = () => {
                     'Please verify your email before logging in.',
                     [
                         {
+                            text: 'OK',
+                        },
+                        {
                             text: 'Resend',
                             onPress: async () => {
                                 try {
@@ -46,15 +49,11 @@ const LoginForm = () => {
                                 }
                             },
                         },
-                        {
-                            text: 'OK',
-                        },
                     ],
                     { cancelable: true }
                 );
                 return;
             }
-
 
             // Get user type
             const userDoc = await getDoc(doc(db, "users", user.uid));
@@ -64,10 +63,7 @@ const LoginForm = () => {
             const targetDashboard = userType === 'student' ? 'StudentDashboard' : 'TutorDashboard';
 
             // Reset the navigation stack and navigate to the appropriate dashboard
-            navigation.reset({
-                index: 0,
-                routes: [{ name: targetDashboard }],
-            });
+            navigation.navigate(targetDashboard);
         } catch (error) {
             Alert.alert('Error', 'Invalid email or password');
             console.log(error);
