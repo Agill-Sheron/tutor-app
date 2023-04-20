@@ -23,6 +23,10 @@ const TutorDashboard = () => {
         navigation.navigate('TutorAppointment', { appointment });
     };
 
+    const handleRequestPress = (request) => {
+        navigation.navigate('TutorRequest', { request });
+    };
+
     useEffect(() => {
         setTimeout(() => {
             setLoading(false);
@@ -139,7 +143,7 @@ const TutorDashboard = () => {
                             : requests.map((request) => (
                                 <Pressable
                                     key={request.id}
-                                    onPress={() => console.log('Request Pressed')}
+                                    onPress={() => handleRequestPress(request)}
                                 >
                                     {({ isPressed }) => (
                                         <Box
