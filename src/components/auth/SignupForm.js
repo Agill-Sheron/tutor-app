@@ -4,7 +4,8 @@ import firebase from '../../utils/firebase';
 import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
 import { Box, VStack, FormControl, Input, Button, Text } from 'native-base';
 
-const SignupForm = () => {
+
+const SignupForm = ({ navigation }) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
@@ -15,6 +16,7 @@ const SignupForm = () => {
             createUserWithEmailAndPassword(auth, email, password)
                 .then((userCredential) => {
                     const user = userCredential.user;
+                    navigation.navigate('RoleSelection', { email });
                 })
                 .catch((error) => {
                     const errorCode = error.code;

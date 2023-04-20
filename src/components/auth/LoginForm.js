@@ -22,6 +22,7 @@ const LoginForm = () => {
 
     const navigation = useNavigation();
     const handleLogin = () => {
+        navigation.navigate('Dashboard');
         // Implement login functionality here
     };
 
