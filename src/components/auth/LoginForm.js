@@ -1,5 +1,5 @@
 // src/components/Auth/LoginForm.js
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import {Alert, Image} from 'react-native';
 import {
     Box,
@@ -8,21 +8,66 @@ import {
     Input,
     Button,
     Text,
-    HStack,
     Pressable,
 } from 'native-base';
 
-import { useNavigation } from '@react-navigation/native';
-
+import firebase from '../../utils/firebase';
+import {useNavigation} from '@react-navigation/native';
+import {getAuth, sendEmailVerification, signInWithEmailAndPassword} from "firebase/auth";
+import {getFirestore, getDoc, doc} from "firebase/firestore";
 
 const LoginForm = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
-
+    const auth = getAuth(firebase);
+    const db = getFirestore(firebase);
     const navigation = useNavigation();
-    const handleLogin = () => {
-        // Implement login functionality here
+    const handleLogin = async () => {
+        try {
+            // Sign in the user
+            const userCredential = await signInWithEmailAndPassword(auth, email, password);
+            const user = userCredential.user;
+
+            if (!user.emailVerified) {
+                Alert.alert(
+                    'Error',
+                    'Please verify your email before logging in.',
+                    [
+                        {
+                            text: 'OK',
+                        },
+                        {
+                            text: 'Resend',
+                            onPress: async () => {
+                                try {
+                                    await sendEmailVerification(user);
+                                    Alert.alert('Email Verification', 'A new confirmation email has been sent to your email address.');
+                                } catch (error) {
+                                    console.log(error);
+                                    Alert.alert('Error', 'There was an error sending the verification email. Please try again.');
+                                }
+                            },
+                        },
+                    ],
+                    { cancelable: true }
+                );
+                return;
+            }
+
+            // Get user type
+            const userDoc = await getDoc(doc(db, "users", user.uid));
+            const userType = userDoc.data().userType;
+
+            // Determine the target dashboard
+            const targetDashboard = userType === 'student' ? 'StudentDashboard' : 'TutorDashboard';
+
+            // Reset the navigation stack and navigate to the appropriate dashboard
+            navigation.navigate(targetDashboard);
+        } catch (error) {
+            Alert.alert('Error', 'Invalid email or password');
+            console.log(error);
+        }
     };
 
     const showSignUpPrompt = () => {
