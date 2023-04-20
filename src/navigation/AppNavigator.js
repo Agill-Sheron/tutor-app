@@ -5,9 +5,11 @@ import { NavigationContainer } from '@react-navigation/native';
 import StudentSignupForm from '../components/auth/StudentSignupForm';
 import TutorSignupForm from '../components/auth/TutorSignupForm';
 import TutorDashboard from '../components/main/TutorDashboard';
+import TutorAppointment from "../components/main/TutorAppointment";
 import LoginForm from '../components/auth/LoginForm';
 
 import { AuthProvider, AuthContext } from '../context/AuthContext';
+
 
 const Stack = createStackNavigator();
 
@@ -22,6 +24,11 @@ const AppNavigator = () => {
                         <Stack.Screen
                             name="TutorDashboard"
                             component={TutorDashboard}
+                            options={{ headerShown: false }}
+                        />
+                        <Stack.Screen
+                            name="TutorAppointment"
+                            component={TutorAppointment}
                             options={{ headerShown: false }}
                         />
                     </>
