@@ -6,6 +6,7 @@ import StudentSignupForm from '../components/auth/StudentSignupForm';
 import TutorSignupForm from '../components/auth/TutorSignupForm';
 import TutorDashboard from '../components/main/TutorDashboard';
 import TutorAppointment from "../components/main/TutorAppointment";
+import TutorRequest from "../components/main/TutorRequest";
 import LoginForm from '../components/auth/LoginForm';
 
 import { AuthProvider, AuthContext } from '../context/AuthContext';
@@ -29,6 +30,11 @@ const AppNavigator = () => {
                         <Stack.Screen
                             name="TutorAppointment"
                             component={TutorAppointment}
+                            options={{ headerShown: false }}
+                        />
+                        <Stack.Screen
+                            name="TutorRequest"
+                            component={TutorRequest}
                             options={{ headerShown: false }}
                         />
                     </>
