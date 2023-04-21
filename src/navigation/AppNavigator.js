@@ -20,6 +20,7 @@ import TutorAccountSettings from "../components/settings/TutorAccountSettings";
 import TutorProfileManagement from "../components/profile/TutorProfileManagement";
 import TutoredCoursesManagement from "../components/profile/TutoredCoursesManagement";
 import TutorAvailabilityManagement from "../components/profile/TutorAvailabilityManagement";
+import TutorPaymentManagement from "../components/profile/TutorPaymentManagement";
 
 
 const Stack = createStackNavigator();
@@ -94,14 +95,19 @@ const AppNavigator = () => {
                         <Stack.Screen
                             name="TutoredCoursesManagement"
                             component={TutoredCoursesManagement}
-                            options={{ headerShown: true, title: "Profile Management" ,headerRight: null, headerLeft: null }}
+                            options={{ headerShown: true, title: "Tutored Courses Management" ,headerRight: null, headerLeft: null }}
                         />
-
 
                         <Stack.Screen
                             name="TutorAvailabilityManagement"
                             component={TutorAvailabilityManagement}
-                            options={{ headerShown: true, title: "Profile Management" ,headerRight: null, headerLeft: null }}
+                            options={{ headerShown: true, title: "Availability Management" ,headerRight: null, headerLeft: null }}
+                        />
+
+                        <Stack.Screen
+                            name="TutorPaymentManagement"
+                            component={TutorPaymentManagement}
+                            options={{ headerShown: true, title: "Payments Management" ,headerRight: null, headerLeft: null }}
                         />
                     </>
                 ): (

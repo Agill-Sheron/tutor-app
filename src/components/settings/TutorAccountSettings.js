@@ -59,7 +59,7 @@ const TutorAccountSettings = () => {
                 <Button onPress={() => navigation.navigate('TutorAvailabilityManagement')}>
                     Availability
                 </Button>
-                <Button onPress={() => console.log('Payment')}>
+                <Button onPress={() =>  navigation.navigate('TutorPaymentManagement')}>
                     Payments
                 </Button>
                 <VStack mt={50} height={"40%"} space={4} justifyContent={'flex-end'}>
