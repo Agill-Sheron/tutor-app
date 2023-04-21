@@ -1,15 +1,24 @@
 import React, { useState } from 'react';
-import { ScrollView, Box, VStack, HStack, Text, Pressable, Avatar } from 'native-base';
+import {ScrollView, Box, VStack, HStack, Text, Pressable, Avatar, Select} from 'native-base';
 import { Ionicons } from '@expo/vector-icons';
 import DateTimePicker from '@react-native-community/datetimepicker';
-import {useRoute} from "@react-navigation/native";
+import {useNavigation, useRoute} from "@react-navigation/native";
 import {AirbnbRating} from "react-native-ratings";
 import {Alert} from "react-native";
+import firebase from '../../utils/firebase';
+import {
+    collection,
+    addDoc,
+    getFirestore,
+} from 'firebase/firestore';
+import {getAuth} from "firebase/auth";
 
 const TutorSearchProfile = () => {
     const route = useRoute();
     const tutor = route.params.tutor;
-
+    const navigate = useNavigation();
+    const auth = getAuth(firebase);
+    const currentUser = auth.currentUser;
 
     const [date, setDate] = useState(new Date());
 
@@ -17,6 +26,8 @@ const TutorSearchProfile = () => {
     const [endTime, setEndTime] = useState(new Date());
     const [isStartTimeSelected, setIsStartTimeSelected] = useState(false);
     const [isEndTimeSelected, setIsEndTimeSelected] = useState(false);
+    const [selectedCourse, setSelectedCourse] = useState(null);
+
 
     const isValidDateTimeSelection = () => {
         const currentDate = new Date();
@@ -62,24 +73,49 @@ const TutorSearchProfile = () => {
         return totalFee.toFixed(2);
     };
 
-    const sendRequest = () => {
+    const createTutoringSession = async (tutor, startTime, endTime, totalFee) => {
+        const db = getFirestore(firebase);
+        const tutoringSessionsRef = collection(db, 'tutoringSessions');
 
+        try {
+            const tutoringSession = {
+                tutorId: tutor.id,
+                studentId: currentUser.uid,
+                startTime: startTime.toISOString(),
+                endTime: endTime.toISOString(),
+                totalFee: totalFee,
+                status: 'pending',
+                date: date.toISOString(),
+                course: selectedCourse,
+                duration: ((endTime - startTime) / (1000 * 60 * 60)).toFixed(2),
+                studentName: currentUser.displayName,
+                avatarUrl: currentUser.photoURL,
+            };
+            const docRef = await addDoc(tutoringSessionsRef, tutoringSession);
+            console.log('Tutoring session created with ID:', docRef.id);
+        } catch (e) {
+            console.error('Error adding tutoring session:', e);
+        }
+    };
+
+    const sendTutoringSession = () => {
         const totalFee = calculateTotalFee();
 
         Alert.alert(
             'Confirm Payment',
-            `Total Fee: ${totalFee}\n\nAre you sure you want to proceed with the payment and send the request?`,
+            `Total Fee: ${totalFee}\n\nAre you sure you want to proceed with the payment and send the tutoring session?`,
             [
                 {
                     text: 'Cancel',
-                    onPress: () => console.log('Request canceled'),
+                    onPress: () => console.log('Tutoring session canceled'),
                     style: 'cancel',
                 },
                 {
                     text: 'OK',
                     onPress: () => {
                         console.log('Payment confirmed');
-                        // Handle sending request to the tutor
+                        createTutoringSession(tutor, startTime, endTime, totalFee);
+                        navigate.navigate('StudentDashboard');
                     },
                 },
             ],
@@ -98,18 +134,10 @@ const TutorSearchProfile = () => {
                                 uri: tutor.avatarUrl,
                             }}
                         />
-                        <HStack width={"80%"} alignItems={"center"} justifyContent={"space-between"}>
-                            <VStack ml={4} space={1}>
+                        <HStack width={"80%"} alignItems={"flex-start"} justifyContent={"space-between"}>
+                            <VStack ml={4} space={1} alignItems={'flex-start'}>
                                 <Text fontSize="md" fontWeight="medium" color="coolGray.800">
-                                    {tutor.name}
-                                </Text>
-                                <Text fontSize="xs" color="coolGray.700">
-                                    {tutor.courses.join(', ')}
-                                </Text>
-                            </VStack>
-                            <VStack ml={4} space={2} alignItems={"flex-end"} >
-                                <Text fontSize="xs" color="coolGray.800">
-                                    {tutor.hourlyRate} per hour
+                                    {tutor.firstName} {tutor.lastName}
                                 </Text>
                                 <AirbnbRating
                                     count={5}
@@ -119,9 +147,51 @@ const TutorSearchProfile = () => {
                                     showRating={false}
                                 />
                             </VStack>
+                            <VStack ml={4} space={2} alignItems={"flex-start"} justifyContent={'flex-start'} >
+                                <Text fontSize="xl" fontWeight="bold" color="emerald.600">
+                                    {tutor.hourlyRate ? `$${tutor.hourlyRate}/hr` : 'N/A'}
+                                </Text>
+                            </VStack>
                         </HStack>
 
                     </HStack>
+                    <HStack width={"80%"} alignItems={"center"} justifyContent={"space-between"}>
+                        <VStack ml={4} space={1}>
+                            <Text fontSize="md" fontWeight="medium" color="coolGray.800">
+                                Tutored Courses
+                            </Text>
+                            <Text fontSize="xs" color="coolGray.700">
+                                {tutor.tutoredCourses.map(({ prefix, code }) => `${prefix}-${code}`).join(', ')}
+                            </Text>
+                        </VStack>
+                    </HStack>
+                    <Pressable>
+                        <Box
+                            bg={'coolGray.100'}
+                            p={5}
+                            rounded={8}
+                            borderWidth={1}
+                            borderColor="coolGray.300"
+                            shadow={3}
+                        >
+                            <HStack alignItems={"center"} justifyContent={"flex-start"}>
+                                <Text width={"40%"} fontSize="sm" fontWeight="medium" color="coolGray.800">
+                                    Select Course:
+                                </Text>
+                                <Select
+                                    width={"300%"}
+                                    height={30}
+                                    placeholder="Select course"
+                                    value={selectedCourse}
+                                    onValueChange={(itemValue) => setSelectedCourse(itemValue)}
+                                >
+                                    {tutor.tutoredCourses.map(({ prefix, code }) => (
+                                        <Select.Item key={`${prefix}-${code}`} label={`${prefix}-${code}`} value={`${prefix}-${code}`} />
+                                    ))}
+                                </Select>
+                            </HStack>
+                        </Box>
+                    </Pressable>
                     <Pressable>
                         <Box
                             bg={'coolGray.100'}
@@ -221,16 +291,13 @@ const TutorSearchProfile = () => {
                                     </Text>
                                     <Text fontSize="sm" color="coolGray.700">
                                         Total Fee: $
-                                        {(
-                                            ((endTime - startTime) / (60 * 60 * 1000)) *
-                                            parseFloat(tutor.hourlyRate.slice(1))
-                                        ).toFixed(2)}
+                                        {calculateTotalFee()}
                                     </Text>
                                 </VStack>
                             </HStack>
                         </VStack>
                     </Box>
-                    <Pressable onPress={sendRequest} disabled={!isValidDateTimeSelection()}>
+                    <Pressable onPress={sendTutoringSession} disabled={!isValidDateTimeSelection()}>
                         {({ isPressed, isDisabled }) => (
                             <Box
                                 bg={
