@@ -3,10 +3,14 @@ import { Alert } from 'react-native';
 import firebase from '../../utils/firebase';
 import { getAuth, createUserWithEmailAndPassword, sendEmailVerification } from 'firebase/auth';
 import { getFirestore, setDoc, doc } from 'firebase/firestore';
-import { Box, VStack, FormControl, Input, Button, Text } from 'native-base';
+import {Box, VStack, FormControl, Input, Button, Text, ScrollView} from 'native-base';
 import {useNavigation} from "@react-navigation/native";
 
 const StudentSignupForm = () => {
+
+    const [firstName, setFirstName] = useState('');
+    const [lastName, setLastName] = useState('');
+    const [phoneNumber, setPhoneNumber] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
@@ -31,6 +35,9 @@ const StudentSignupForm = () => {
 
             await setDoc(doc(db, "users", user.uid), {
                 userType: 'student',
+                firstName: firstName,
+                lastName: lastName,
+                phoneNumber: phoneNumber,
             });
 
             await sendEmailVerification(user);
@@ -57,39 +64,64 @@ const StudentSignupForm = () => {
 
     return (
         <Box flex={1} justifyContent="center" p={4} backgroundColor={'white'}>
-            <VStack space={4}>
-                <FormControl>
-                    <FormControl.Label>Email</FormControl.Label>
-                    <Input
-                        value={email}
-                        onChangeText={setEmail}
-                        keyboardType="email-address"
-                        autoCapitalize="none"
-                    />
-                </FormControl>
-                <FormControl>
-                    <FormControl.Label>Password</FormControl.Label>
-                    <Input
-                        value={password}
-                        onChangeText={setPassword}
-                        secureTextEntry
-                        autoCapitalize="none"
-                    />
-                </FormControl>
-                <FormControl>
-                    <FormControl.Label>Confirm Password</FormControl.Label>
-                    <Input
-                        value={confirmPassword}
-                        onChangeText={setConfirmPassword}
-                        secureTextEntry
-                        autoCapitalize="none"
-                    />
-                </FormControl>
-                <Button onPress={handleSignup}>
-                    <Text color={'white'}>Sign Up</Text>
-                </Button>
-            </VStack>
-        </Box>
+                <VStack space={4}>
+                    <FormControl>
+                        <FormControl.Label>First Name</FormControl.Label>
+                        <Input
+                            value={firstName}
+                            onChangeText={setFirstName}
+                            autoCapitalize="words"
+                        />
+                    </FormControl>
+                    <FormControl>
+                        <FormControl.Label>Last Name</FormControl.Label>
+                        <Input
+                            value={lastName}
+                            onChangeText={setLastName}
+                            autoCapitalize="words"
+                        />
+                    </FormControl>
+                    <FormControl>
+                        <FormControl.Label>Phone Number</FormControl.Label>
+                        <Input
+                            value={phoneNumber}
+                            onChangeText={setPhoneNumber}
+                            keyboardType="phone-pad"
+                        />
+                    </FormControl>
+                    <FormControl>
+                        <FormControl.Label>Email</FormControl.Label>
+                        <Input
+                            value={email}
+                            onChangeText={setEmail}
+                            keyboardType="email-address"
+                            autoCapitalize="none"
+                        />
+                    </FormControl>
+                    <FormControl>
+                        <FormControl.Label>Password</FormControl.Label>
+                        <Input
+                            value={password}
+                            onChangeText={setPassword}
+                            secureTextEntry
+                            autoCapitalize="none"
+                        />
+                    </FormControl>
+                    <FormControl>
+                        <FormControl.Label>Confirm Password</FormControl.Label>
+                        <Input
+                            value={confirmPassword}
+                            onChangeText={setConfirmPassword}
+                            secureTextEntry
+                            autoCapitalize="none"
+                        />
+                    </FormControl>
+                    <Button onPress={handleSignup}>
+                        <Text color={'white'}>Sign Up</Text>
+                    </Button>
+                </VStack>
+            </Box>
+
     );
 };
 

@@ -64,8 +64,8 @@ const AppNavigator = () => {
                             component={LoginForm}
                             options={{ headerShown: false }}
                         />
-                        <Stack.Screen name="StudentSignUp" component={StudentSignupForm} />
-                        <Stack.Screen name="TutorSignUp" component={TutorSignupForm} />
+                        <Stack.Screen name="StudentSignUp" component={StudentSignupForm} options={{title: "Student Sign Up"}}/>
+                        <Stack.Screen name="TutorSignUp" component={TutorSignupForm} options={{title: "Tutor Sign Up"}} />
                     </>
                 )}
             </Stack.Navigator>
