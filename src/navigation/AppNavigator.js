@@ -8,6 +8,7 @@ import TutorDashboard from '../components/main/TutorDashboard';
 import StudentDashboard from '../components/main/StudentDashboard';
 import TutorAppointment from "../components/main/TutorAppointment";
 import TutorRequest from "../components/main/TutorRequest";
+import TutorSearch from "../components/main/TutorSearch";
 import LoginForm from '../components/auth/LoginForm';
 
 import { AuthProvider, AuthContext } from '../context/AuthContext';
@@ -41,6 +42,11 @@ const AppNavigator = () => {
                         <Stack.Screen
                             name="StudentDashboard"
                             component={StudentDashboard}
+                            options={{ headerShown: false }}
+                        />
+                        <Stack.Screen
+                            name="TutorSearch"
+                            component={TutorSearch}
                             options={{ headerShown: false }}
                         />
                     </>
