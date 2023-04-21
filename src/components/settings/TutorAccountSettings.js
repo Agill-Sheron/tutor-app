@@ -56,11 +56,11 @@ const TutorAccountSettings = () => {
                 <Button onPress={() => navigation.navigate('TutoredCoursesManagement')}>
                     Tutored Courses
                 </Button>
-                <Button onPress={() => console.log('Availabilities')}>
-                    Availabilities
+                <Button onPress={() => navigation.navigate('TutorAvailabilityManagement')}>
+                    Availability
                 </Button>
-                <Button onPress={() => console.log('PayPal Account')}>
-                    PayPal Account
+                <Button onPress={() => console.log('Payment')}>
+                    Payments
                 </Button>
                 <VStack mt={50} height={"40%"} space={4} justifyContent={'flex-end'}>
                     <Button onPress={handleLogout} variant="outline">

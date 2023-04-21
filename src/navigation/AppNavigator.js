@@ -19,6 +19,7 @@ import {Ionicons} from "@expo/vector-icons";
 import TutorAccountSettings from "../components/settings/TutorAccountSettings";
 import TutorProfileManagement from "../components/profile/TutorProfileManagement";
 import TutoredCoursesManagement from "../components/profile/TutoredCoursesManagement";
+import TutorAvailabilityManagement from "../components/profile/TutorAvailabilityManagement";
 
 
 const Stack = createStackNavigator();
@@ -93,6 +94,13 @@ const AppNavigator = () => {
                         <Stack.Screen
                             name="TutoredCoursesManagement"
                             component={TutoredCoursesManagement}
+                            options={{ headerShown: true, title: "Profile Management" ,headerRight: null, headerLeft: null }}
+                        />
+
+
+                        <Stack.Screen
+                            name="TutorAvailabilityManagement"
+                            component={TutorAvailabilityManagement}
                             options={{ headerShown: true, title: "Profile Management" ,headerRight: null, headerLeft: null }}
                         />
                     </>
