@@ -78,8 +78,8 @@ const TutorDashboard = () => {
     }, []);
 
     return (
-        <ScrollView backgroundColor={'white'}>
-            <Box p={4} backgroundColor={'white'}>
+        <ScrollView>
+            <Box p={4}>
                 <VStack space={4}>
                     <Text fontSize="2xl" fontWeight="bold">
                         Upcoming Appointments

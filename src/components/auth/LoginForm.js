@@ -1,4 +1,3 @@
-// src/components/Auth/LoginForm.js
 import React, { useState, useContext } from 'react';
 import {Alert, Image} from 'react-native';
 import {
@@ -17,7 +16,7 @@ import {getAuth, sendEmailVerification, signInWithEmailAndPassword} from "fireba
 import {getFirestore, getDoc, doc} from "firebase/firestore";
 
 const LoginForm = () => {
-    const [email, setEmail] = useState('ag.malik.tahir@gmail.com');
+    const [email, setEmail] = useState('r3nn4.test@inbox.testmail.app');
     const [password, setPassword] = useState('');
 
     const auth = getAuth(firebase);

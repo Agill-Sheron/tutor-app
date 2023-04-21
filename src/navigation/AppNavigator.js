@@ -21,19 +21,21 @@ import TutorProfileManagement from "../components/profile/TutorProfileManagement
 import TutoredCoursesManagement from "../components/profile/TutoredCoursesManagement";
 import TutorAvailabilityManagement from "../components/profile/TutorAvailabilityManagement";
 import TutorPaymentManagement from "../components/profile/TutorPaymentManagement";
+import StudentAccountSettings from "../components/settings/StudentAccountSettings";
+import StudentProfileManagement from "../components/profile/StudentProfileManagement";
 
 
 const Stack = createStackNavigator();
 
 const AppNavigator = () => {
-    const { user } = useContext(AuthContext);
+    const { user, userType } = useContext(AuthContext);
 
     return (
         <NavigationContainer>
             <Stack.Navigator
                 screenOptions={({ navigation }) => ({
                     headerStyle: {
-                        backgroundColor: 'white',
+                        backgroundColor: 'transparent',
                         elevation: 0,
                         shadowOpacity: 0,
                         minHeight: 80,
@@ -41,7 +43,7 @@ const AppNavigator = () => {
                     headerRight: () => (
                         <TouchableOpacity
                             style={{ marginRight: 15 }}
-                            onPress={() => navigation.navigate('TutorAccountSettings', { user })}
+                            onPress={() => userType === 'tutor' ? navigation.navigate('TutorAccountSettings', { user }) : navigation.navigate('StudentAccountSettings', { user })}
                         >
                             <Ionicons name="settings-outline" size={40} color="#611f2a" />
                         </TouchableOpacity>
@@ -57,22 +59,22 @@ const AppNavigator = () => {
                         <Stack.Screen
                             name="TutorAppointment"
                             component={TutorAppointment}
-                            options={{ headerShown: false }}
+                            options={{ headerShown: true, title: "" }}
                         />
                         <Stack.Screen
                             name="TutorRequest"
                             component={TutorRequest}
-                            options={{ headerShown: false }}
+                            options={{ headerShown: true, title: "" }}
                         />
                         <Stack.Screen
                             name="StudentDashboard"
                             component={StudentDashboard}
-                            options={{ headerShown: false }}
+                            options={{ headerShown: true, title: "" }}
                         />
                         <Stack.Screen
                             name="TutorSearch"
                             component={TutorSearch}
-                            options={{ headerShown: false }}
+                            options={{ headerShown: true , title: "" }}
                         />
                         <Stack.Screen
                             name="TutorSearchProfile"
@@ -87,8 +89,20 @@ const AppNavigator = () => {
                         />
 
                         <Stack.Screen
+                            name="StudentAccountSettings"
+                            component={StudentAccountSettings}
+                            options={{ headerShown: true, title: "Account Settings" ,headerRight: null, headerLeft: null }}
+                        />
+
+                        <Stack.Screen
                             name="TutorProfileManagement"
                             component={TutorProfileManagement}
+                            options={{ headerShown: true, title: "Profile Management" ,headerRight: null, headerLeft: null }}
+                        />
+
+                        <Stack.Screen
+                            name="StudentProfileManagement"
+                            component={StudentProfileManagement}
                             options={{ headerShown: true, title: "Profile Management" ,headerRight: null, headerLeft: null }}
                         />
 
