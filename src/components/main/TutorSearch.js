@@ -62,7 +62,8 @@ const SearchTutor = () => {
 
 
     const handleTutorSearchPress = (tutor) => {
-        // Handle the tutor press event here, e.g., navigate to tutor details
+        // Handle the tutor press event here, e.g., navigate to TutorSearchProfile with tutor data
+        navigation.navigate('TutorSearchProfile', { tutor });
     };
 
     const filteredTutors = tutors.filter((tutor) => {
