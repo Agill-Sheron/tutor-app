@@ -17,6 +17,7 @@ import { AuthProvider, AuthContext } from '../context/AuthContext';
 import {TouchableOpacity} from "react-native";
 import {Ionicons} from "@expo/vector-icons";
 import TutorAccountSettings from "../components/settings/TutorAccountSettings";
+import TutorProfileManagement from "../components/profile/TutorProfileManagement";
 
 
 const Stack = createStackNavigator();
@@ -29,7 +30,7 @@ const AppNavigator = () => {
             <Stack.Navigator
                 screenOptions={({ navigation }) => ({
                     headerStyle: {
-                        backgroundColor: 'transparent',
+                        backgroundColor: 'white',
                         elevation: 0,
                         shadowOpacity: 0,
                         minHeight: 80,
@@ -81,6 +82,12 @@ const AppNavigator = () => {
                             component={TutorAccountSettings}
                             options={{ headerShown: true, title: "Account Settings" ,headerRight: null, headerLeft: null }}
                         />
+
+                        <Stack.Screen
+                            name="TutorProfileManagement"
+                            component={TutorProfileManagement}
+                            options={{ headerShown: true, title: "Profile Management" ,headerRight: null, headerLeft: null }}
+                        />
                     </>
                 ): (
                     <>
@@ -89,8 +96,13 @@ const AppNavigator = () => {
                             component={LoginForm}
                             options={{ headerShown: false }}
                         />
-                        <Stack.Screen name="StudentSignUp" component={StudentSignupForm} options={{title: "Student Sign Up"}}/>
-                        <Stack.Screen name="TutorSignUp" component={TutorSignupForm} options={{title: "Tutor Sign Up"}} />
+                        <Stack.Screen name="StudentSignUp" component={StudentSignupForm} options={{title: "Student Sign Up", headerLeft:null, headerRight:null}}/>
+                        <Stack.Screen name="TutorSignUp" component={TutorSignupForm}
+                                      options={{
+                                          title: "Tutor Sign Up",
+                                          headerLeft:null,
+                                          headerRight:null,
+                                     }} />
                     </>
                 )}
             </Stack.Navigator>
