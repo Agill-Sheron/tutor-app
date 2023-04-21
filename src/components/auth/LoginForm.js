@@ -17,7 +17,7 @@ import {getAuth, sendEmailVerification, signInWithEmailAndPassword} from "fireba
 import {getFirestore, getDoc, doc} from "firebase/firestore";
 
 const LoginForm = () => {
-    const [email, setEmail] = useState('r3nn4.test@inbox.testmail.app');
+    const [email, setEmail] = useState('ag.malik.tahir@gmail.com');
     const [password, setPassword] = useState('');
 
     const auth = getAuth(firebase);

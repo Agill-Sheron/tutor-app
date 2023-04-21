@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Alert } from 'react-native';
 import firebase from '../../utils/firebase';
-import {getAuth, createUserWithEmailAndPassword, sendEmailVerification} from 'firebase/auth';
+import {getAuth, createUserWithEmailAndPassword, sendEmailVerification, updateProfile} from 'firebase/auth';
 import {
     Box,
     VStack,
@@ -71,7 +71,6 @@ const TutorSignupForm = () => {
 
 
     const handleSignup = async () => {
-
         if (password !== confirmPassword) {
             Alert.alert('Error', 'Passwords do not match');
             return;
@@ -85,6 +84,10 @@ const TutorSignupForm = () => {
             );
             const user = userCredential.user;
 
+            await updateProfile(user, {
+                displayName: `${firstName} ${lastName}`,
+            });
+
             await setDoc(doc(db, "users", user.uid), {
                 userType: 'tutor',
                 firstName: firstName,
@@ -97,7 +100,6 @@ const TutorSignupForm = () => {
 
             await sendEmailVerification(user);
 
-            // Display an alert requesting email confirmation
             Alert.alert(
                 'Email Verification',
                 'A confirmation email has been sent to your email address. Please confirm your email before logging in.',
@@ -118,8 +120,9 @@ const TutorSignupForm = () => {
         }
     };
 
+
     return (
-        <ScrollView>
+        <ScrollView backgroundColor={"white"}>
             <Box flex={1} justifyContent="center" p={4} backgroundColor={'white'}>
                 <VStack space={4}>
                     <FormControl>
