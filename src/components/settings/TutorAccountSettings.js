@@ -53,7 +53,7 @@ const TutorAccountSettings = () => {
                 <Button onPress={() => navigation.navigate('TutorProfileManagement')}>
                     Personal Profile
                 </Button>
-                <Button onPress={() => console.log('Tutored Courses')}>
+                <Button onPress={() => navigation.navigate('TutoredCoursesManagement')}>
                     Tutored Courses
                 </Button>
                 <Button onPress={() => console.log('Availabilities')}>
@@ -62,12 +62,14 @@ const TutorAccountSettings = () => {
                 <Button onPress={() => console.log('PayPal Account')}>
                     PayPal Account
                 </Button>
-                <Button onPress={handleLogout} variant="outline">
-                    Logout
-                </Button>
-                <Button onPress={handleDeleteAccount} colorScheme="red">
-                    Delete Account
-                </Button>
+                <VStack mt={50} height={"40%"} space={4} justifyContent={'flex-end'}>
+                    <Button onPress={handleLogout} variant="outline">
+                        Logout
+                    </Button>
+                    <Button onPress={handleDeleteAccount} colorScheme="red">
+                        Delete Account
+                    </Button>
+                </VStack>
             </VStack>
         </Box>
     );
