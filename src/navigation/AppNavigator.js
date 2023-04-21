@@ -74,7 +74,7 @@ const AppNavigator = () => {
                         <Stack.Screen
                             name="TutorSearch"
                             component={TutorSearch}
-                            options={{ headerShown: true , title: "" }}
+                            options={{ headerShown: true , title: "", headerLeft: null}}
                         />
                         <Stack.Screen
                             name="TutorSearchProfile"

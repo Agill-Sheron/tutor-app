@@ -76,7 +76,7 @@ const StudentDashboard = () => {
 
     return (
         <ScrollView>
-            <Box p={4} mt={10}>
+            <Box p={4} mt={5}>
                 <VStack space={4}>
                     <Pressable onPress={handleTutorSearchPress}>
                         {({ isPressed }) => (
@@ -92,9 +92,7 @@ const StudentDashboard = () => {
                                     <Text fontSize="2xl" fontWeight="bold">
                                         Search Tutors
                                     </Text>
-                                    {/*//search icon*/}
                                     <Ionicons name="search" size={35} color="#ab3a4b" />
-
                                 </HStack>
 
                             </Box>
