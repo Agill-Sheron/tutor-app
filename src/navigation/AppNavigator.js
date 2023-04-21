@@ -51,78 +51,85 @@ const AppNavigator = () => {
                 })}>
                 {user ?  (
                     <>
-                        <Stack.Screen
-                            name="TutorDashboard"
-                            component={TutorDashboard}
-                            options={{ headerShown: true, title: "" }}
-                        />
-                        <Stack.Screen
-                            name="TutorAppointment"
-                            component={TutorAppointment}
-                            options={{ headerShown: true, title: "" }}
-                        />
-                        <Stack.Screen
-                            name="TutorRequest"
-                            component={TutorRequest}
-                            options={{ headerShown: true, title: "" }}
-                        />
-                        <Stack.Screen
-                            name="StudentDashboard"
-                            component={StudentDashboard}
-                            options={{ headerShown: true, title: "" }}
-                        />
-                        <Stack.Screen
-                            name="TutorSearch"
-                            component={TutorSearch}
-                            options={{ headerShown: true , title: "", headerLeft: null}}
-                        />
-                        <Stack.Screen
-                            name="TutorSearchProfile"
-                            component={TutorSearchProfile}
-                            options={{ headerShown: false }}
-                        />
+                        {(userType === 'tutor') ? (
+                            <>
+                                <Stack.Screen
+                                    name="TutorDashboard"
+                                    component={TutorDashboard}
+                                    options={{ headerShown: true, title: "" }}
+                                />
+                                <Stack.Screen
+                                    name="TutorAppointment"
+                                    component={TutorAppointment}
+                                    options={{ headerShown: true, title: "" }}
+                                />
+                                <Stack.Screen
+                                    name="TutorRequest"
+                                    component={TutorRequest}
+                                    options={{ headerShown: true, title: "" }}
+                                />
 
-                        <Stack.Screen
-                            name="TutorAccountSettings"
-                            component={TutorAccountSettings}
-                            options={{ headerShown: true, title: "Account Settings" ,headerRight: null, headerLeft: null }}
-                        />
+                                <Stack.Screen
+                                    name="TutorAccountSettings"
+                                    component={TutorAccountSettings}
+                                    options={{ headerShown: true, title: "Account Settings" ,headerRight: null, headerLeft: null }}
+                                />
 
-                        <Stack.Screen
-                            name="StudentAccountSettings"
-                            component={StudentAccountSettings}
-                            options={{ headerShown: true, title: "Account Settings" ,headerRight: null, headerLeft: null }}
-                        />
+                                <Stack.Screen
+                                    name="TutorProfileManagement"
+                                    component={TutorProfileManagement}
+                                    options={{ headerShown: true, title: "Profile Management" ,headerRight: null, headerLeft: null }}
+                                />
 
-                        <Stack.Screen
-                            name="TutorProfileManagement"
-                            component={TutorProfileManagement}
-                            options={{ headerShown: true, title: "Profile Management" ,headerRight: null, headerLeft: null }}
-                        />
+                                <Stack.Screen
+                                    name="TutoredCoursesManagement"
+                                    component={TutoredCoursesManagement}
+                                    options={{ headerShown: true, title: "Tutored Courses Management" ,headerRight: null, headerLeft: null }}
+                                />
 
-                        <Stack.Screen
-                            name="StudentProfileManagement"
-                            component={StudentProfileManagement}
-                            options={{ headerShown: true, title: "Profile Management" ,headerRight: null, headerLeft: null }}
-                        />
+                                <Stack.Screen
+                                    name="TutorAvailabilityManagement"
+                                    component={TutorAvailabilityManagement}
+                                    options={{ headerShown: true, title: "Availability Management" ,headerRight: null, headerLeft: null }}
+                                />
 
-                        <Stack.Screen
-                            name="TutoredCoursesManagement"
-                            component={TutoredCoursesManagement}
-                            options={{ headerShown: true, title: "Tutored Courses Management" ,headerRight: null, headerLeft: null }}
-                        />
+                                <Stack.Screen
+                                    name="TutorPaymentManagement"
+                                    component={TutorPaymentManagement}
+                                    options={{ headerShown: true, title: "Payments Management" ,headerRight: null, headerLeft: null }}
+                                />
+                            </>) : (
+                            <>
+                                <Stack.Screen
+                                    name="StudentDashboard"
+                                    component={StudentDashboard}
+                                    options={{ headerShown: true, title: "" }}
+                                />
+                                <Stack.Screen
+                                    name="TutorSearch"
+                                    component={TutorSearch}
+                                    options={{ headerShown: true , title: "", headerLeft: null}}
+                                />
+                                <Stack.Screen
+                                    name="TutorSearchProfile"
+                                    component={TutorSearchProfile}
+                                    options={{ headerShown: false }}
+                                />
 
-                        <Stack.Screen
-                            name="TutorAvailabilityManagement"
-                            component={TutorAvailabilityManagement}
-                            options={{ headerShown: true, title: "Availability Management" ,headerRight: null, headerLeft: null }}
-                        />
+                                <Stack.Screen
+                                    name="StudentAccountSettings"
+                                    component={StudentAccountSettings}
+                                    options={{ headerShown: true, title: "Account Settings" ,headerRight: null, headerLeft: null }}
+                                />
 
-                        <Stack.Screen
-                            name="TutorPaymentManagement"
-                            component={TutorPaymentManagement}
-                            options={{ headerShown: true, title: "Payments Management" ,headerRight: null, headerLeft: null }}
-                        />
+                                <Stack.Screen
+                                    name="StudentProfileManagement"
+                                    component={StudentProfileManagement}
+                                    options={{ headerShown: true, title: "Profile Management" ,headerRight: null, headerLeft: null }}
+                                />
+
+                            </>
+                        )}
                     </>
                 ): (
                     <>
